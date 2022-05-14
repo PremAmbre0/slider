@@ -1,14 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>slider</title>
+    <style>
+        * {
+            margin: 0;
+            border: 0;
+            box-sizing: border-box;
+        }
 
-    <link rel="stylesheet" href="style.css">
+        body {
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-container,
+        input[type=range],
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 300px;
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            -webkit-appearance: none;
+            height: 10px;
+            background-color: purple;
+            border-radius: 100px;
+            position: absolute;
+        }
+
+        input[type='range']::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            /* position: absolute; */
+            height: 24px;
+            width: 24px;
+            background: #fff;
+            border-radius: 50%;
+            border: 1px solid purple;
+            cursor: pointer;
+            transform: translateY(-7.5px);
+        }
+
+        .val {
+            position: absolute;
+            top: -23px;
+            left: 136px;
+            height: 20px;
+            width: 32px;
+            border-radius: 5px;
+            margin-right: 10px;
+            box-shadow: inset 0 0 2px;
+            text-align: center;
+            line-height: 0.7;
+            padding: 5px;
+        }
+    </style>
 </head>
+
 <body>
-    
+
+
+    <div class="slider-container">
+        <input type="range" class="range" min="0" max="100" value="50">
+        <input type="text" class="val" value="50"></input>
+    </div>
+
+    <script>
+        // function
+        function offsetCalc(value) {
+
+            const slider_width = parseInt(getComputedStyle(range).getPropertyValue('width'));
+            const valueBox_width = parseInt(getComputedStyle(valueBox).getPropertyValue('width'));
+            const offset = value * (slider_width) / 100 - value * (valueBox_width / 100);
+
+            return offset;
+        }
+
+        // global variables
+        const range = document.querySelector('.range')
+        const valueBox = document.querySelector('.val')
+
+        //calls
+        range.oninput = function (e) {
+            const value = Number(e.target.value);;
+            valueBox.value = `${value}`;
+
+            left = offsetCalc(value);
+            valueBox.style.left = `${left}px`;
+        }
+        valueBox.oninput = function (e) {
+            const value = Number(e.target.value)
+            valueBox.value = `${value}`;
+            range.value = value
+
+            left = offsetCalc(value);
+            valueBox.style.left = `${left}px`;
+        }
+    </script>
 </body>
+
 </html>
